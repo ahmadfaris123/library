@@ -21,7 +21,6 @@ class DashboardController extends Controller
         $dipinjam = Peminjaman::where('status', 'like', '%dipinjam%')->get();
         $anggota   = Anggota::get();
         $buku      = Buku::get();
-
         $datas1 = User::all();
         return view('dashboard', compact('datas1','dipinjam','anggota','buku','totalPeminjam'));
     }
