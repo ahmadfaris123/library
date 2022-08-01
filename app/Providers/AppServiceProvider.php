@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +33,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $datauser = User::select('name', 'foto')->first();
-        View::share('datauser',$datauser);
+        view()->composer('*', function($view)
+        {
+            if (Auth::check()) {
+                if (Auth::user() == !null) {
+                    $datauser = User::select('name', 'foto')->where('id', Auth::user()->id)->first();
+                    $view->with('datauser', $datauser);
+
+                }
+            }
+            
+        });
     }
 }
